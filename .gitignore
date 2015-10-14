@@ -1,0 +1,6 @@
+*.o
+compiler/parser.output
+compiler/litecomp
+compiler/parser.cpp
+compiler/parser.hpp
+compiler/tokens.cpp
