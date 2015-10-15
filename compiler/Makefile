@@ -3,9 +3,9 @@ EXEC_NAME = litecomp
 INCLUDE_DIR =includes
 
 OBJ_FILES =	\
-main.o		\
 parser.o 	\
 tokens.o 	\
+main.o		\
 
 GEN_FILES_CLEANUP = 	\
 tokens.cpp 		\
@@ -16,7 +16,7 @@ all: $(OBJ_FILES)
 	g++ $< $(EXEC_NAME) -std=c++11 -I$(INCLUDE_DIR)
 
 %.o:%.cpp
-	g++ $< -o $@ -std=c++11 -I$(INCLUDE_DIR)
+	g++ -c $< -o $@ -std=c++11 -I$(INCLUDE_DIR)
 
 parser.cpp: parser.y
 	bison -d -o $@ $< -v

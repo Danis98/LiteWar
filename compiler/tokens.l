@@ -3,15 +3,17 @@
 #include "parser.hpp"
 #define SAVE_TOKEN yylval.string=new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token=t)
+extern "C" int yywrap(){}
 %}
-
-%option noyywrap
 
 %%
 
 [ \t\n]		;
 
 [0-9]+		SAVE_TOKEN; return TOKEN(TNUM);
+[a-zA-Z]+	SAVE_TOKEN; return TOKEN(TIDENTIFIER);
+
+":"		return TOKEN(COLON);
 
 "dat"		return TOKEN(TDAT);
 "mov"		return TOKEN(TMOV);
@@ -31,6 +33,9 @@
 "cmp"		return TOKEN(TCMP);
 
 "nop"		return TOKEN(TNOP);
+
+"macro"		return TOKEN(TMACRO);
+"endmacro"	return TOKEN(TENDMACRO);
 
 .		printf("Unknown token: %s\n",yytext); yyterminate();
 
