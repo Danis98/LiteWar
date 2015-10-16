@@ -13,7 +13,7 @@ parser.cpp		\
 parser.hpp
 
 all: $(OBJ_FILES)
-	g++ $< $(EXEC_NAME) -std=c++11 -I$(INCLUDE_DIR)
+	g++ $(OBJ_FILES) -o $(EXEC_NAME) -std=c++11 -I$(INCLUDE_DIR)
 
 %.o:%.cpp
 	g++ -c $< -o $@ -std=c++11 -I$(INCLUDE_DIR)

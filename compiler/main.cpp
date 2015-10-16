@@ -2,6 +2,9 @@
 #include <cstdio>
 #include <sys/stat.h>
 
+#include <node.h>
+
+extern NBlock *programBlock;
 extern int yyparse();
 
 extern FILE *yyin;
@@ -13,7 +16,7 @@ inline bool file_exists(const char *name){
 
 int main(int argc, char **argv){
 	if(argc<2){
-		std::cout<<"Usage: "<<argv[0]<<"[ -f ] <source file>, "
+		std::cout<<"[USAGE]: "<<argv[0]<<"[ -f ] <source file>, "
 		<<argc-1<<" arguments inputted instead\n";
 		return 0;
 	}
@@ -26,4 +29,7 @@ int main(int argc, char **argv){
 			return 0;
 		}
 	}
+	
+	std::cout<<"Starting parsing...\n";
+	yyparse();
 }

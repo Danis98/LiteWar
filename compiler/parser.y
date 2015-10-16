@@ -1,24 +1,21 @@
 %{
+	#include <cstdlib>
 	#include <iostream>
 	#include <string>
-
-	#include "parser.hpp"
 	
 	#include <node.h>
 
-	block *program_block;
+	NBlock *programBlock;
 
 	extern int yylex();
 	void yyerror(const char *s){std::printf("[COMPILATION FAILED] %s\n", s); std::exit(1);}
 %}
 
-%union{
-	stmt* stmt;
-	block* block;
-	label* label;
-	instr* instr;
-	ident* ident;
-	stmt_list* block;
+%union {
+	NStmt *stmt;
+	NBlock *block;
+	NIdent *ident;
+	NExpr *expr;
 	std::string *string;
 	int token;
 }
@@ -29,22 +26,20 @@
 %token <token> TDAT TMOV TADD TSUB TMUL TDIV TMOD TJMP TJZ TJNZ TSPL TCMP TNOP
 
 %type <ident> ident
+%type <expr> numeric expr
 %type <block> program stmts
-%type <macro> macro
-%type <label> label
-%type <stmt> stmt
+%type <stmt> stmt macro label instr
 %type <token> op
 
 %start program
 
 %%
 
-program: stmts{std::cout<<"Starting program parsing...\n";
-		program_block=$1;}
+program: stmts {programBlock=$1;}
 	;
 
-stmts	: stmt{}
-	| stmt stmts{}
+stmts	: stmt {$$=new NBlock(); $$->stmts.push_back($<stmt>1);}
+	| stmts stmt {$1->stmts.push_back($<stmt>2);}
 	;
 
 stmt	: instr
@@ -52,18 +47,24 @@ stmt	: instr
 	| label
 	;
 
-instr	: op{}
-	| op TNUM{}
-	| op TNUM TNUM{}
+instr	: op {$$=new NInstr($1);}
+	| op expr {$$=new NInstr($1, $2);}
+	| op expr expr {}
 	;
 
-macro	: TMACRO ident stmts TENDMACRO
+macro	: TMACRO ident stmts TENDMACRO{}
 	;
 
-label	: ident COLON
+label	: ident COLON{}
 	;
 
-ident	: TIDENTIFIER
+expr	: numeric
+	;
+
+ident	: TIDENTIFIER {$$=new NIdent(*$1); delete $1;}
+	;
+
+numeric : TNUM {$$=new NNum(atoi($1->c_str())); delete $1;}
 	;
 
 op	: TDAT|TMOV|TADD|TSUB|TMUL|TDIV|TMOD|TJMP|TJZ|TJNZ|TSPL|TCMP|TNOP

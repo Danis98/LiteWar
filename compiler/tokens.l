@@ -1,6 +1,8 @@
 %{
 #include <string>
+#include <node.h>
 #include "parser.hpp"
+
 #define SAVE_TOKEN yylval.string=new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token=t)
 extern "C" int yywrap(){}
@@ -9,9 +11,6 @@ extern "C" int yywrap(){}
 %%
 
 [ \t\n]		;
-
-[0-9]+		SAVE_TOKEN; return TOKEN(TNUM);
-[a-zA-Z]+	SAVE_TOKEN; return TOKEN(TIDENTIFIER);
 
 ":"		return TOKEN(COLON);
 
@@ -36,6 +35,9 @@ extern "C" int yywrap(){}
 
 "macro"		return TOKEN(TMACRO);
 "endmacro"	return TOKEN(TENDMACRO);
+
+[a-zA-Z]+	SAVE_TOKEN; return TOKEN(TIDENTIFIER);
+[0-9]+		SAVE_TOKEN; return TOKEN(TNUM);
 
 .		printf("Unknown token: %s\n",yytext); yyterminate();
 

@@ -1,49 +1,63 @@
 #ifndef __NODE_H
 #define __NODE_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 
-class stmt;
-class instr;
+class NStmt;
+class NInstr;
 
-std::vector<stmt*> stmt_list;
+typedef std::vector<NStmt*> stmtList;
 
-class stmt{
+class NStmt{
 public:
-	virtual ~stmt(){}
+	virtual ~NStmt(){}
 };
 
-class ident{
+class NExpr{
+public:
+	virtual ~NExpr(){}
+};
+
+class NIdent : public NExpr{
 public:
 	std::string id;
-	ident(std::string& id) : id(id){}
+	NIdent(std::string& id) : id(id){}
 };
 
-class label : public stmt{
+class NNum : public NExpr{
 public:
-	ident name;
-	label(ident& name) : name(name){}
+	int num;
+	NNum(int num) : num(num){std::cout<<"Fliflozio\n";}
 };
 
-class instr : public stmt{
+class NLabel : public NStmt{
+public:
+	NIdent name;
+	NLabel(NIdent& name) : name(name){}
+};
+
+class NInstr : public NStmt{
 public:
 	int id;
-	int *a, *b;
-	instr(int id) : id(id){}
-	instr(int id, int *a) : id(id), a(a){}
-	instr(int id, int *a, int *b) : id(id), a(a), b(b){}
+	NExpr *a, *b;
+	NInstr(int id) : id(id){}
+	NInstr(int id, NExpr *a) : id(id), a(a){}
+	NInstr(int id, NExpr *a, NExpr *b) : id(id), a(a), b(b){}
 };
 
-class block : public stmt{
-	stmt_list stmts;
-	block(){}
+class NBlock : public NStmt{
+public:
+	stmtList stmts;
+	NBlock(){}
 };
 
-class macro : public stmt{
-	ident id;
-	stmt_list stmts;
-	macro(ident& id) : id(id){}
+class NMacro : public NStmt{
+public:
+	NIdent id;
+	NBlock block;
+	NMacro(NIdent& id, NBlock& block) : id(id), block(block){}
 };
 
 #endif
