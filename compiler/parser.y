@@ -1,5 +1,6 @@
 %{
 	#include <cstdlib>
+	#include <cstdio>
 	#include <iostream>
 	#include <string>
 	

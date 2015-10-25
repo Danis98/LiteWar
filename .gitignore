@@ -1,4 +1,5 @@
 *.o
+*.exe
 compiler/parser.output
 compiler/litecomp
 compiler/parser.cpp
