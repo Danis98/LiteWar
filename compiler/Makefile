@@ -37,5 +37,8 @@ parser.hpp: parser.cpp
 tokens.cpp: tokens.l parser.hpp
 	$(LEX_PRG) -o $@ $<
 
-clean:
-	rm -f $(OBJ_FILES) $(GEN_FILES_CLEANUP) parser.output $(EXEC_NAME)$(EXEC_EXTENSION)
+clean_tmp:
+	rm -rf $(OBJ_FILES) $(GEN_FILES_CLEANUP) parser.output 
+
+clean: clean_tmp
+	rm -rf $(EXEC_NAME)$(EXEC_EXTENSION) 

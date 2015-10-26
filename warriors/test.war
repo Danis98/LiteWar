@@ -1,2 +1,59 @@
-dat 
-mov 1
+[start]  spl lnch1
+         spl lnch3
+         
+[lnch2]  spl 8
+         spl 4
+         spl 2
+         jmp imp2+(step2*0)
+         jmp imp2+(step2*1)
+         spl 2
+         jmp imp2+(step2*2)
+         jmp imp2+(step2*3)
+         spl 4
+         spl 2
+         jmp imp2+(step2*4)
+         jmp imp2+(step2*5)
+         spl 2
+         jmp imp2+(step2*6)
+         jmp imp2+(step2*7)
+         
+[lnch3]  spl 8
+         spl 4
+         spl 2
+         jmp imp3+(step2*0)
+         jmp imp3+(step2*1)
+         spl 2
+         jmp imp3+(step2*2)
+         jmp imp3+(step2*3)
+         spl 4
+         spl 2
+         jmp imp3+(step2*4)
+         jmp imp3+(step2*5)
+         spl 2
+         jmp imp3+(step2*6)
+         jmp imp3+(step2*7)
+         
+[lnch1]  spl 8
+         spl 4
+         spl 2
+         jmp imp1+(step1*0)
+         jmp imp1+(step1*1)
+         spl 2
+         jmp imp1+(step1*2)
+         jmp imp1+(step1*3)
+         spl 4
+         spl 2
+         jmp imp1+(step1*4)
+         jmp imp1+(step1*5)
+         spl 2
+         jmp imp1+(step1*6)
+         jmp imp1+(step1*7)
+         
+[imp1]   mov 0 step1
+         dat #0
+         dat #0
+         dat #0
+[imp2]   mov 0 step2
+         mov 0 step2
+[imp3]   mov 0 step2
+         mov 0 step2
